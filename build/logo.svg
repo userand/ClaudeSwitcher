@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF9B6E"/>
+      <stop offset=".5" stop-color="#E8613D"/>
+      <stop offset="1" stop-color="#B53A27"/>
+    </linearGradient>
+    <radialGradient id="shine" cx=".28" cy=".08" r=".85">
+      <stop offset="0" stop-color="#fff" stop-opacity=".34"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+      <stop offset=".4" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#3a0d05" stop-opacity=".3"/>
+    </linearGradient>
+    <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#5a1608" flood-opacity=".4"/>
+    </filter>
+  </defs>
+
+  <!-- 底板 -->
+  <rect x="72" y="72" width="880" height="880" rx="224" fill="url(#bg)"/>
+  <rect x="72" y="72" width="880" height="880" rx="224" fill="url(#shine)"/>
+  <rect x="75" y="75" width="874" height="874" rx="221" fill="none" stroke="url(#rim)" stroke-width="6"/>
+
+  <!-- 两张错位的账号卡片 -->
+  <g filter="url(#drop)">
+    <rect x="330" y="322" width="260" height="330" rx="56" fill="#fff" opacity=".32"/>
+    <rect x="434" y="372" width="260" height="330" rx="56" fill="#fff"/>
+  </g>
+  <circle cx="564" cy="492" r="46" fill="#E8613D"/>
+  <rect x="494" y="566" width="140" height="26" rx="13" fill="#E8613D"/>
+  <rect x="522" y="610" width="84" height="22" rx="11" fill="#E8613D" opacity=".4"/>
+
+  <!-- 同心圆上的两段切换箭头（半径 300） -->
+  <g fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M217 460A300 300 0 0 1 486 213"/>
+    <path d="M440 174L486 213L447 259"/>
+    <path d="M807 564A300 300 0 0 1 538 811"/>
+    <path d="M584 850L538 811L577 765"/>
+  </g>
+</svg>

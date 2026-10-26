@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'">
+  <title>Switcher for Claude</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="titlebar">
+    <img class="titlebar-icon" src="icon.png" alt="">
+    <span class="titlebar-name">Switcher</span>
+    <span class="titlebar-for">for Claude</span>
+    <div class="win-controls">
+      <button class="win-btn" data-win="minimize" aria-label="最小化">&#xE921;</button>
+      <button class="win-btn win-close" data-win="close" aria-label="关闭">&#xE8BB;</button>
+    </div>
+  </header>
+
+  <main id="main" class="main"></main>
+
+  <footer class="footer">
+    <button id="addBtn" class="add-btn">
+      <span class="add-plus"><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg></span>
+      <span>添加账号</span>
+      <kbd id="addKbd" class="kbd">Ctrl N</kbd>
+    </button>
+  </footer>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="sheet progress-sheet">
+      <div class="ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="ring-track" cx="60" cy="60" r="52"/>
+          <circle id="ringBar" class="ring-bar" cx="60" cy="60" r="52"/>
+        </svg>
+        <div id="ringAvatar" class="ring-avatar"></div>
+      </div>
+      <h2 id="progTitle" class="progress-title"></h2>
+      <p id="progStep" class="progress-step"></p>
+    </div>
+  </div>
+
+  <div id="modal" class="overlay" hidden>
+    <form id="modalForm" class="sheet dialog">
+      <h2 id="modalTitle" class="dialog-title"></h2>
+      <p id="modalText" class="dialog-text"></p>
+      <input id="modalInput" class="field" autocomplete="off" spellcheck="false" maxlength="40">
+      <div class="dialog-actions">
+        <button type="button" id="modalCancel" class="btn btn-ghost">取消</button>
+        <button type="submit" id="modalOk" class="btn btn-primary">确定</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

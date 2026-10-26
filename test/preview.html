@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- 界面预览：加载真实的 src/renderer/index.html，用假数据代替 Electron 的 window.api。
+     需要通过静态服务器打开（如 python -m http.server），然后访问 /test/preview.html
+     参数：?empty 显示首次使用状态，?off 显示 Claude 未运行 -->
+<meta charset="utf-8">
+<script>
+  const q = new URLSearchParams(location.search);
+  const mock = q.has('empty')
+    ? { active: null, profiles: [], claudeRunning: true }
+    : {
+        active: 'Alex',
+        profiles: [
+          { name: 'Alex', savedAt: '2026-10-26 12:08:21' },
+          { name: '备用账号', savedAt: '2026-10-25 21:30:00' },
+          { name: 'Work', savedAt: null },
+        ],
+        claudeRunning: !q.has('off'),
+      };
+  const ok = (data) => Promise.resolve({ ok: true, data });
+  let onProg = () => {};
+  window.api = {
+    state: () => Promise.resolve(JSON.parse(JSON.stringify({ platform: 'win32', dataDirExists: true, busy: false, ...mock }))),
+    register: (n) => { mock.profiles.push({ name: n, savedAt: null }); mock.active = n; return ok(); },
+    switchTo: async (n) => {
+      for (const s of ['stop', 'save', 'restore', 'start']) { onProg(s); await new Promise((r) => setTimeout(r, 800)); }
+      mock.active = n; return ok();
+    },
+    add: async (n) => { mock.profiles.push({ name: n, savedAt: null }); mock.active = n; return ok(); },
+    rename: (a, b) => { mock.profiles.find((p) => p.name === a).name = b; if (mock.active === a) mock.active = b; return ok(); },
+    remove: (n) => { mock.profiles = mock.profiles.filter((p) => p.name !== n); return ok(); },
+    launch: () => { mock.claudeRunning = true; return ok(); },
+    onProgress: (cb) => { onProg = cb; },
+    windowControl: (a) => console.log('window', a),
+  };
+  fetch('../src/renderer/index.html').then((r) => r.text()).then((html) => {
+    html = html.replace(/<meta http-equiv="Content-Security-Policy"[^>]*>/, '')
+      .replace('<head>', '<head><base href="../src/renderer/">');
+    document.open(); document.write(html); document.close();
+  });
+</script>

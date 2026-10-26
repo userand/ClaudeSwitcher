@@ -1,0 +1,42 @@
+{
+  "name": "claude-switcher",
+  "productName": "Claude Switcher",
+  "version": "1.1.0",
+  "description": "在多个 Claude 桌面版账号之间一键切换",
+  "main": "src/main.js",
+  "author": "userand",
+  "repository": "github:userand/ClaudeSwitcher",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/core.test.js",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "33.2.0",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "local.claude-switcher",
+    "productName": "Claude Switcher",
+    "directories": { "output": "dist", "buildResources": "build" },
+    "files": ["src/**/*", "package.json"],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Claude Switcher"
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "icon": "build/icon.png",
+      "category": "public.app-category.utilities"
+    }
+  }
+}

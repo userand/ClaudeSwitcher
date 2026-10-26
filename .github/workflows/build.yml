@@ -1,0 +1,33 @@
+# 推到 GitHub 后，在 Actions 页面手动运行，即可同时打包 Windows 和 Mac 版本
+name: build
+on: workflow_dispatch
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            cmd: dist:win
+          - os: macos-latest
+            cmd: dist:mac
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --registry=https://registry.npmjs.org
+        env:
+          ELECTRON_MIRROR: https://github.com/electron/electron/releases/download/
+      - run: npm test
+      - run: npm run ${{ matrix.cmd }} -- --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+      - uses: actions/upload-artifact@v4
+        with:
+          name: claude-switcher-${{ matrix.os }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.zip
