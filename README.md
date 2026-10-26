@@ -30,7 +30,8 @@ npm run dist:win   # 打包 Windows 安装包 → dist/
 npm run dist:mac   # 打包 Mac 版（必须在 Mac 上运行）→ dist/
 ```
 
-Mac 版只能在 Mac 上打包。没有 Mac 的话，可以把项目推到 GitHub，在 Actions 里运行 `build` 工作流，同时得到两个平台的安装包。
+Mac 版只能在 Mac 上打包。发布新版本时推送 `v*` 标签（如 `git tag v1.2.0 && git push origin v1.2.0`），
+GitHub Actions 会在 Windows 和 macOS 上分别打包并自动创建 Release；也可以在 Actions 页面手动运行 `build`，只打包不发布。
 Mac 版未签名，第一次打开时需右键 → 打开。
 
 `test/preview.html` 是用假数据预览界面的页面，用任意静态服务器打开即可。
