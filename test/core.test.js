@@ -12,6 +12,7 @@ const r = (p) => (fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null);
 const cfg = () => JSON.parse(r(path.join(dataDir, 'config.json')));
 
 w(path.join(dataDir, 'Network', 'Cookies'), 'COOKIE-A');
+w(path.join(dataDir, 'Cookies'), 'MAC-COOKIE-A');
 w(path.join(dataDir, 'Local Storage', 'leveldb', 'x.ldb'), 'LS-A');
 w(path.join(dataDir, 'vm_bundles', 'big.bin'), 'SHARED');
 w(path.join(dataDir, 'config.json'), JSON.stringify({ locale: 'zh-CN', nested: { a: [1] }, 'oauth:tokenCache': 'TOK-A', lastKnownAccountUuid: 'uuid-a' }));
@@ -24,6 +25,7 @@ w(path.join(dataDir, 'config.json'), JSON.stringify({ locale: 'zh-CN', nested: {
 
   await s.addNew('备用账号');
   assert.strictEqual(r(path.join(dataDir, 'Network', 'Cookies')), null, '新账号应清空登录');
+  assert.strictEqual(r(path.join(dataDir, 'Cookies')), null, '新账号应清空 macOS 的 Cookies');
   assert.strictEqual(cfg()['oauth:tokenCache'], undefined);
   assert.strictEqual(cfg().locale, 'zh-CN', '其他设置应保留');
 
@@ -35,6 +37,7 @@ w(path.join(dataDir, 'config.json'), JSON.stringify({ locale: 'zh-CN', nested: {
   await s.switchTo('主账号', (st) => steps.push(st));
   assert.deepStrictEqual(steps, ['stop', 'save', 'restore', 'start']);
   assert.strictEqual(r(path.join(dataDir, 'Network', 'Cookies')), 'COOKIE-A');
+  assert.strictEqual(r(path.join(dataDir, 'Cookies')), 'MAC-COOKIE-A');
   assert.strictEqual(r(path.join(dataDir, 'Local Storage', 'leveldb', 'x.ldb')), 'LS-A');
   assert.strictEqual(cfg()['oauth:tokenCache'], 'TOK-A');
   assert.deepStrictEqual(cfg().nested, { a: [1] });

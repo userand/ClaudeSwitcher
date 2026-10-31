@@ -9,7 +9,8 @@ const os = require('os');
 const path = require('path');
 const { execFile } = require('child_process');
 
-const AUTH_DIRS = ['Network', 'Local Storage', 'Session Storage', 'IndexedDB', 'WebStorage'];
+// Windows 的 Cookies 在 Network/ 下；macOS 的 Cookies 直接放在数据目录根下
+const AUTH_DIRS = ['Network', 'Cookies', 'Cookies-journal', 'Local Storage', 'Session Storage', 'IndexedDB', 'WebStorage'];
 const AUTH_KEYS = ['oauth:tokenCache', 'oauth:tokenCacheV2', 'lastKnownAccountUuid'];
 
 const isWin = process.platform === 'win32';
@@ -148,7 +149,8 @@ class Switcher {
     for (let i = 0; ; i++) {
       try {
         fs.rmSync(dst, { recursive: true, force: true });
-        copyRecursive(src, dst);
+        if (fs.statSync(src).isFile()) fs.copyFileSync(src, dst);
+        else copyRecursive(src, dst);
         return;
       } catch (e) {
         if (i >= 5) throw new Error(`复制失败：${src}（${e.code || e.message}）`);
